@@ -1,0 +1,6 @@
+*.py[cod]
+model-v1
+cpm-lm-tf2
+cpm-lm-tf2-fp16
+.DS_Store
+.ipynb_checkpoints

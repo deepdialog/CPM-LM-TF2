@@ -1,0 +1,4 @@
+*.py[cod]
+gpt_model_tf2
+model.ckpt-*
+.ipynb_checkpoints
