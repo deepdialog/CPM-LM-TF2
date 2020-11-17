@@ -22,6 +22,8 @@ A：1. 我装不上Nvidia apex；2. 按照原Repo说明需要两张显卡的主�
 
 打开下面分享下载CPM目录的`cpm-lm-tf2`
 
+    也可以下载cpm-lm-tf2_v2，是第二个版本，如果下载这个，后面的也要改成主要参考prediction_v2.ipynb，v2版本的区别是增加了top_p和temperature两个参数
+
 ```
 链接: https://pan.baidu.com/s/1tjbWty2hkbmtCrvV9Qh_SQ  密码: n0nt
 --来自百度网盘超级会员V7的分享

@@ -2,5 +2,6 @@
 model-v1
 cpm-lm-tf2
 cpm-lm-tf2-fp16
+cpm-lm-tf2_v2
 .DS_Store
 .ipynb_checkpoints
