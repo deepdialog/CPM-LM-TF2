@@ -6,6 +6,8 @@
 
 原项目介绍文章：[https://mp.weixin.qq.com/s/oI2Ak-M57MSuycLVpVEiHw](https://mp.weixin.qq.com/s/oI2Ak-M57MSuycLVpVEiHw)
 
+    如果你只想大概看一下结果，请直接打开`prediction_v2.ipynb`文件预览
+
 ## 感谢智源研究院的工作！
 
 Q：为什么你要把源代码转换为TensorFlow版本？
@@ -59,6 +61,8 @@ pip install tensorflow-hub
 ```
 
 4. 参考`prediction.ipynb`中的代码运行
+
+    如果你下载的是_v2版本的模型，请参考`prediction_v2.ipynb`
 
 其中所需大概代码就这么几行：
 
