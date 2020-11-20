@@ -22,7 +22,7 @@ A：1. 我装不上Nvidia apex；2. 按照原Repo说明需要两张显卡的主�
 
 2. 下载模型：
 
-打开下面分享下载CPM目录的`cpm-lm-tf2_2`
+打开下面分享下载CPM目录的`cpm-lm-tf2_v2`
 
 
 ```
@@ -75,7 +75,7 @@ tokenizer = GPT2Tokenizer(
     'CPM-Generate/bpe_3w_new/merges.txt',
     model_file='CPM-Generate/bpe_3w_new/chinese_vocab.model')
 
-gpt = hub.load('./cpm-lm-tf2/')
+gpt = hub.load('./cpm-lm-tf2_v2/')
 
 
 def sample(tokenizer, gpt, sentence, number=1, length=20, top_p=0.9, temperature=0.9):
