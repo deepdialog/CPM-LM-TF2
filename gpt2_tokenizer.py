@@ -281,7 +281,8 @@ class GPT2Tokenizer(object):
 
     def decode(self, tokens):
         text = self.sp.decode([self.decoder[x] for x in tokens])
-        text = text.replace(' ', '').replace('\u2582', ' ').replace('\u2583', '\n').replace('\u2584', '<eod>')
+        # text = text.replace(' ', '').replace('\u2582', ' ').replace('\u2583', '\n').replace('\u2584', '<eod>')
+        text = text.replace('\u2582', ' ').replace('\u2583', '\n').replace('\u2584', '<eod>')
         #text = bytearray([self.byte_decoder[c] for c in text]).decode('utf-8', errors=self.errors)
         return text
 

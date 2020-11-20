@@ -22,13 +22,16 @@ A：1. 我装不上Nvidia apex；2. 按照原Repo说明需要两张显卡的主�
 
 2. 下载模型：
 
-打开下面分享下载CPM目录的`cpm-lm-tf2`
+打开下面分享下载CPM目录的`cpm-lm-tf2_2`
 
-    也可以下载cpm-lm-tf2_v2，是第二个版本，如果下载这个，后面的也要改成主要参考prediction_v2.ipynb，v2版本的区别是增加了top_p和temperature两个参数
 
 ```
 链接: https://pan.baidu.com/s/1tjbWty2hkbmtCrvV9Qh_SQ  密码: n0nt
 --来自百度网盘超级会员V7的分享
+
+or GDrive：
+
+https://drive.google.com/drive/folders/1b2sF5sBuR_9zsT8UUijdsAcmFaMZJlpX?usp=sharing
 ```
 
     另一个目录`cpm-lm-tf2-fp16`是fp16版本的模型，但是除非你有显卡，并且确认支持float16，并且确认正确安装CUDA，否则`请使用非fp16`的版本，因为在不支持float16的设备上，会非常慢！
@@ -37,13 +40,13 @@ A：1. 我装不上Nvidia apex；2. 按照原Repo说明需要两张显卡的主�
 
 ```
 - cpm-tf2
-  - cpm-lm-tf2  （从网盘下载好的TF2版本模型）
+  - cpm-lm-tf2_v2  （从网盘下载好的TF2版本模型）
     - assets
     - saved_model.pb
     - variables
   - CPM-Generate
     - bpe_3w_new （词表所在目录）
-  - prediction.ipynb  （预测demo，主程序）
+  - prediction_v2.ipynb  （预测demo，主程序）
   - gpt2_tokenizer.py  （分词文件，这个里面引入了jieba，和huggingface那一系列的不能简单互换）
 ```
 
@@ -53,16 +56,11 @@ A：1. 我装不上Nvidia apex；2. 按照原Repo说明需要两张显卡的主�
 
 ```
 # 依赖：
-pip install sentencepiece
-pip install jieba
-pip install regex
-pip install tensorflow
-pip install tensorflow-hub
+pip install sentencepiece jieba regex tensorflow tensorflow-hub
 ```
 
-4. 参考`prediction.ipynb`中的代码运行
+4. 参考`prediction_v2.ipynb`中的代码运行
 
-    如果你下载的是_v2版本的模型，请参考`prediction_v2.ipynb`
 
 其中所需大概代码就这么几行：
 
@@ -79,19 +77,50 @@ tokenizer = GPT2Tokenizer(
 
 gpt = hub.load('./cpm-lm-tf2/')
 
-def sample(tokenizer, gpt, sentence, number=1, length=20):
+
+def sample(tokenizer, gpt, sentence, number=1, length=20, top_p=0.9, temperature=0.9):
+    """
+    numbert: 输出句子个数
+    length: 输出最大长度
+    top_p: token的概率排在这以上才有效
+    temperature: 温度
+    """
     inputs = tf.constant([tokenizer.encode(sentence)] * number, dtype=tf.int64)
     length = tf.constant(length, dtype=tf.int64)
-    ret = gpt.signatures['serving_default'](inp=inputs, length=length)['output_0']
+    ret = gpt.signatures['serving_default'](
+        inp=inputs,
+        length=length,
+        top_p=tf.constant(top_p, tf.float32),
+        temperature=tf.constant(temperature, tf.float32)
+    )['output_0']
     return [
         tokenizer.decode(s).replace(' ', '')
         for s in ret.numpy()
     ]
 
-ret = sample(tokenizer, gpt, '书写英文：\n狗dog\n猫cat\n鸟', 3, 10)
+
+ret = sample(tokenizer, gpt, '默写英文：\n狗dog\n猫cat\n鸟', 3, 10, top_p=0.9, temperature=0.9)
 for x in ret:
     print(x)
     print('-' * 20)
+```
+
+# md5
+
+cpm-lm-tf2_v2
+
+```
+e075f997f257cbd0a5d9cbb972322d46 saved_model.pb
+0b7c8b55e1061a0561a5242005015295 variables/variables.data-00000-of-00001
+86b97441fad0a3f2a616bf55f22d866a variables/variables.index
+```
+
+cpm-lm-tf2-fp16
+
+```
+6958f42f74dd8e4b45ef60628b80da57 saved_model.pb
+19bb9afa028a05ea03d4fe52e47d3c48 variables/variables.data-00000-of-00001
+462fc087aa454887158f353fa0316801 variables/variables.index
 ```
 
 ## 一些额外的闲聊
