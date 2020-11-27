@@ -1,5 +1,6 @@
 *.py[cod]
 model-v1
+cpm-logits-model
 cpm-lm-tf2
 cpm-lm-tf2-fp16
 cpm-lm-tf2_v2
