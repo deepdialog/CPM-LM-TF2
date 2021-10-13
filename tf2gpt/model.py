@@ -238,10 +238,13 @@ class GPT(tf.keras.Model):
                  embedding_size,
                  num_attention_heads,
                  attention_dropout,
-                 residual_dropout, **kwargs):
+                 residual_dropout,
+                 use_cache=True,
+                 **kwargs):
 
         super(GPT, self).__init__(**kwargs)
 
+        self.use_cache = use_cache
         self.token_emb = tf.keras.layers.Embedding(vocab_size, embedding_size)
         self.pos_emb = PositionEmbedding(block_size, embedding_size)
         self.emb_drop = tf.keras.layers.Dropout(embedding_dropout)
@@ -257,7 +260,7 @@ class GPT(tf.keras.Model):
         self.final_norm = tf.keras.layers.LayerNormalization(
             epsilon=1e-5, name='LayerNorm_final_norm')
 
-    def call(self, x, kv_cache=None, use_cache=False, **kwargs):
+    def call(self, x, kv_cache=None, **kwargs):
         x = self.token_emb(x)
         x = self.emb_drop(x + self.pos_emb(x, kv_cache=kv_cache))
 
@@ -271,7 +274,7 @@ class GPT(tf.keras.Model):
         x = self.final_norm(x)
         emb_vec = tf.identity(self.token_emb.weights[0])
         x = tf.matmul(x, emb_vec,  transpose_b=True)
-        if use_cache:
+        if self.use_cache:
             return x, tf.stack(cached_kvs)
         return x
 
