@@ -1,0 +1,9 @@
+numpy
+scipy
+onnxruntime
+jieba
+six
+uvicorn[standard]
+fastapi
+regex
+sentencepiece
